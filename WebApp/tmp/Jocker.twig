@@ -1,0 +1,387 @@
+{% extends "CSS.twig" %}
+{% block content %}
+
+
+
+<div layout="column" layout-fill>
+
+<md-toolbar ng-controller ="configCntrl" md-scroll-shrink="" hide-gt-md md-whiteframe="1">
+    <div class="md-toolbar-tools" >
+        <div>
+          <div>{{ "{{ msgd.attr_value }}" }}</div>
+        </div>
+        <span flex=""></span>        
+      	<md-switch
+		ng-model="statusd1"  
+    	ng-true-value="'1'"
+    	ng-false-value="'0'"
+		ng-change = "actived({{ "{{ statusd1 }}" }})"    			
+	></md-switch> 
+    </div>
+</md-toolbar>
+  
+<section layout="row"  flex="">
+
+
+
+<md-sidenav md-is-locked-open = "$mdMedia('gt-md')" flex="25" md-whiteframe="1"> 
+<md-toolbar layout="row" class="md-hue-5">
+      <div class="md-toolbar-tools">
+        <span>The bootlegger's sanctuary</span>
+      </div>
+    </md-toolbar>
+
+<md-container ng-controller ="configCntrl"> 
+<br>
+<md-grid-list md-cols="5" md-gutter="1em" md-row-height="5:3">
+  <md-grid-tile></md-grid-tile>
+  <md-grid-tile md-colspan="3" class="dmsg" md-whiteframe="1">{{ "{{ msgd.attr_value }}" }}</md-grid-tile>
+  <md-grid-tile></md-grid-tile>
+  <md-grid-tile md-colspan="5">
+  
+<div>
+<h1>I/O</h1>
+	<md-switch
+		ng-model="statusd1"  
+    	ng-true-value="'1'"
+    	ng-false-value="'0'"
+		ng-change = "actived({{ "{{ statusd1 }}" }})"    			
+	></md-switch> 
+</div>
+  
+  </md-grid-tile>  
+</md-grid-list>
+
+</md-container>
+
+
+          
+</md-sidenav>
+  
+
+<md-content  flex="">
+
+<md-list>
+
+{% for film in films %}
+
+  <md-list-item class="md-2-line"   
+  ng-controller="filmsCtrl{{ film.media_id|e }}" 
+  ng-click="showBottomSheet()" 
+  md-whiteframe="1" 
+  md-ink-ripple="#e67e22"  
+  layout="raw"
+  >
+    
+    
+    <div class="md-list-item-text" flex-gt-xs="10" flex-xs="25">
+    <h3 id="name{{ film.media_id|e }}">{{ film.title|e }}</h3>        
+    </div>
+    
+    <div class="md-list-item-text" flex-gt-xs="70" flex-xs="40">
+    	<md-progress-linear id="prgr{{ film.media_id|e }}" md-mode="determinate" value="{{ "{{ myData.conv_progr }}" }}"></md-progress-linear>
+    </div>
+    
+    <div flex-gt-xs="15" flex-xs="30">    
+    <md-fab-speed-dial md-direction="left" class="md-fling" >
+         
+         <md-fab-trigger>         
+         	<md-button class="md-fab" aria-label="FAB">
+         	<md-icon>{{ "{{ icon }}" }}</md-icon>
+         	</md-button>    
+         </md-fab-trigger>
+         
+         <md-fab-actions>
+			<md-switch
+				ng-model="todo"  
+    			ng-true-value="1"
+    			ng-false-value="0"
+				ng-change = "push({{ "{{ todo }}" }})"    			
+			></md-switch>        
+         </md-fab-actions>
+    </md-fab-speed-dial>
+	</div>
+    
+  </md-list-item>
+
+
+
+<script type="text/ng-template" id="toast-template{{ film.media_id|e }}.html">
+<md-toast layout="row" ng-controller="filmsCtrl{{ film.media_id|e }}">
+<div >
+<md-button class="md-raised  md-warn">Input</md-button>
+<md-button class="md-raised  md-warn" ng-disabled="istaskcomplete()">Output</md-button>
+</div>
+</md-toast>
+</script> 
+
+<script type="text/ng-template" id="bottom-sheet-list-template{{ film.media_id|e }}.html">
+<md-bottom-sheet class="md-list md-has-header" ng-controller="filmsCtrl{{ film.media_id|e }}">
+  <h2>{{ film.title|e }}</h2>
+  <md-list ng-cloak>
+    <md-list-item layout="row" layout-align="center">
+<div flex="65"></div>
+<div flex="" >Choose your priorities wisely!</div>
+    </md-list-item>
+
+    <md-list-item>
+<md-button class="md-raised  md-warn" flex-gt-xs="15" flex-xs="5" href="ftp:192.168.88.11/media/input/{{ film.title|e }}">Input!!</md-button>
+<md-button class="md-raised  md-warn" ng-disabled="istaskcomplete()" flex-gt-xs="15" flex-xs="5" href="ftp:192.168.88.11/media/output/{{ film.title|e }}.avi">Output!!</md-button>
+<div flex="10"></div>
+<md-slider layout="column" md-discrete="" ng-model="prior" min="0" max="10" step="1" aria-label="bass" class="md-primary" flex-gt-xs="60" flex-xs=""></md-slider>
+
+    </md-list-item>
+  </md-list>
+</md-bottom-sheet>
+</script>
+  
+  <br>
+
+{% endfor %}
+
+</md-list>
+
+</md-content>
+
+</section>
+</div>
+
+  <!-- Angular Material requires Angular.js Libraries -->
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-aria.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-messages.min.js"></script>
+  <script src="https://cdn.rawgit.com/AngularClass/angular-websocket/v2.0.0/dist/angular-websocket.js"></script>
+
+  <!-- Angular Material Library -->
+  <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+  
+  <!-- Your application bootstrap  -->
+  <script type="text/javascript">    
+    /**
+     * You must include the dependency on 'ngMaterial' 
+     */
+ var app = new angular.module('myApp', ['ngMaterial', 'ngMessages','ngWebSocket'])
+     app.config(function($mdThemingProvider) {
+
+    	  $mdThemingProvider.definePalette('cyandark', {
+    		    '50': '8cc5ff',
+    		    '100': '88bff7',
+    		    '200': '7fb3e8',
+    		    '300': '77a7d8',
+    		    '400': '6e9cc9',
+    		    '500': '6690ba',
+    		    '600': '5d84aa',
+    		    '700': '44607c',
+    		    '800': '44607c',
+    		    '900': '44607c',
+    		    'A100': '3c546d',
+    		    'A200': '2c3e50',
+    		    'A400': '34495e',
+    		    'A700': '23313f',
+    		    'contrastDefaultColor': 'light',    // whether, by default, text (contrast)
+    		                                        // on this palette should be dark or light
+
+    		    'contrastDarkColors': ['50', '100', //hues which contrast should be 'dark' by default
+    		     '200', '300', '400', 'A100'],
+    		    'contrastLightColors': undefined    // could also specify this if default was 'dark'
+    		  });
+
+         $mdThemingProvider.theme('default')    
+    		.primaryPalette('blue')
+    		.accentPalette('deep-orange')
+    		.warnPalette('red')
+    		.backgroundPalette('cyandark')
+			.dark();
+       $mdThemingProvider.theme('altTheme')
+       		.primaryPalette('purple')
+       
+     });
+
+
+ app.service('wsStream', wsStream);   
+ app.service('Blabot', Blabot);
+ app.controller('Cntrl', Cntrl);
+ app.controller('configCntrl', configCntrl);
+ app.factory('mainFactory', mainFactory);
+
+ 
+ {% for film in films %}
+ app.controller('filmsCtrl{{ film.media_id|e }}', function($scope, $http, $mdToast, $mdBottomSheet, wsStream, Blabot, mainFactory) {
+	var resp = {};
+ 	$http.get("?ask_progr/{{ film.media_id|e }}").then(function(response) {
+ 		
+ 		$scope.todo = response.data.conv_query; 		
+ 		$scope.compl = response.data.conv_taskcompl; 		
+ 		resp = response.data;
+ 		$scope.myData = resp;
+ 		$scope.prior = response.data.conv_prior;
+ 		updIcon();				
+
+ 	    		
+   });
+    
+
+	 function updIcon(){
+		$scope.icon = mainFactory.iconSel($scope.todo);
+		};
+
+ 	var updateProgr = function(){
+	    if (Blabot.pine.media_id =={{ film.media_id|e }}) {
+// 	    	$scope.myData = Blabot.pine;
+
+			$http.get("?ask_progr/{{ film.media_id|e }}").then(function(response) {
+				$scope.myData = response.data;
+				});
+
+	    	$scope.todo = 0;
+	    	updIcon();
+		    } 
+// 	    else {$scope.myData = resp;}
+    			        
+      };
+
+      wsStream.registerObserverCallback(updateProgr);
+
+ 	$scope.push = function(input) { 	 	
+ 		$http.get("?push/{{ film.media_id|e }}"+"/"+input);
+ 		updIcon();
+ 		console.log('message: ', input); 		
+ 	 	}
+
+	$scope.istaskcomplete = function() {
+		if ($scope.compl ==0){
+			return true;
+			}
+			
+ 	 }
+ 	
+
+    $scope.showCustomToast = function() {
+        $mdToast.show({
+          hideDelay   : 3000,
+          position    : 'top right',
+          controller  : 'ToastCtrl{{ film.media_id|e }}',
+          templateUrl : 'toast-template{{ film.media_id|e }}.html'        
+        });
+      };
+
+      $scope.$watch(
+    		    function() {
+    		        return $scope.prior;
+    		    },
+    		    function(newValue, oldValue) {
+    		    	$http.get("?priorupd/{{ film.media_id|e }}"+"/"+newValue);    		    	
+    		    });
+
+      $scope.showBottomSheet = function() {
+    	    $scope.alert = '';
+    	    $mdBottomSheet.show({
+    	      templateUrl: 'bottom-sheet-list-template{{ film.media_id|e }}.html'    	      
+    	    });
+    	  };
+    
+ });
+
+ app.controller('ToastCtrl{{ film.media_id|e }}', function($scope, $mdToast, $mdDialog){});
+ 
+ {% endfor %}
+
+ 
+
+ 
+
+
+   function Blabot(){
+	   this.pine = {};
+	   }
+
+   function Cntrl($scope, Blabot, wsStream){}
+
+   function configCntrl($scope, $http, mainFactory, wsStream, Blabot){	   	   
+
+	   $http.get("?statusd1").then(function(response) {	 		
+	 		$scope.statusd1 = response.data.attr_value;	 			 			    		
+	   });	   
+
+	 	var updStat = function(){
+		    $http.get("?statusd3").then(function(response) {	 		
+		    	$scope.msgd = response.data;	 			 			    		
+		   });
+	    			        
+	      };
+
+	   wsStream.registerObserverCallback(updStat);
+
+	   
+	    
+	   $scope.actived = mainFactory.activd;
+	   
+	   }
+
+   function wsStream($websocket, Blabot) {
+		  var observerCallbacks = [];
+
+		  //register an observer
+		  this.registerObserverCallback = function(callback){
+		    observerCallbacks.push(callback);
+		  };
+
+		  //call this when you know 'foo' has been changed
+		  var notifyObservers = function(){
+		    angular.forEach(observerCallbacks, function(callback){
+		      callback();
+		    });
+		  };
+
+		 
+	     // Open a WebSocket connection     
+	     var dataStream = $websocket('ws://192.168.88.11:8000');
+	     
+
+	     dataStream.onMessage(function(message) {                 	 
+	       var obj = JSON.parse(message.data);
+	       console.log('message: ', obj);       
+	       Blabot.pine.media_id = obj.id;
+	       Blabot.pine.conv_progr = obj.percent;
+	       notifyObservers();      
+
+	     });
+
+
+	   }
+   function mainFactory($http){
+
+
+	    var iconSel = function (input){
+// 	    	console.log('AAAAA: ', 1);
+	        if(input ==1){
+	            return 'add_circle';            
+	            }else if (input ==0){return 'add_circle_outline';
+	            }else {console.log('AAAAA: ', input);}
+            };
+	   
+	   // ask daemon activity status
+	   var askstat = function(){};
+
+	   // switch daemon activity
+	   var activd = function(input){
+		   $http.get("?actived/"+input);
+		   console.log('input: ', input);
+		   };
+
+	   
+	   var obj = {
+			   askstat:askstat,
+			   activd:activd,
+			   iconSel:iconSel
+			   };
+	   return obj;
+	   }
+   
+
+	   
+
+
+  </script>
+{% endblock %}

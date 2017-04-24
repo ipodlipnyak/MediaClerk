@@ -1,0 +1,8 @@
+{
+	"autoload":{
+		"psr-4": {"ratApp\\": "src/"}
+	},	
+	"require": {
+        	"cboden/ratchet": "^0.3.5"
+    }
+}

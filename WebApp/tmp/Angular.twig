@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<body>
+
+<div ng-app="myApp" ng-controller="filmsCtrl"> 
+
+<h2>{{ rawData }}</h2>
+<ul>
+  <li ng-repeat="lol in myData">
+    {{ "{{ lol.title + ', ' + lol.progress }}" }}
+  </li>
+</ul>
+
+</div>
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('filmsCtrl', function($scope, $http) {
+	$http.get("?ask_progr").then(function(data) {
+		$scope.myData = data;
+  });
+});
+</script>
+
+</body>
+</html>

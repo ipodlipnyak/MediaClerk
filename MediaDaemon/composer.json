@@ -1,0 +1,11 @@
+{
+	"autoload":{
+		"psr-4": {"MediaDaemon\\": "src/"}
+	},
+    "require": {
+        "shaneharter/php-daemon": "^2.0",
+		"ratchet/pawl": "^0.2.2",
+		"php-ffmpeg/php-ffmpeg": "^0.6.1",
+		"php-activerecord/php-activerecord": "^1.1"
+    }
+}

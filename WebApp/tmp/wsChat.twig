@@ -1,0 +1,56 @@
+{% extends "Main.twig" %}
+
+{% block title %}Index{% endblock %}
+{% block head %}
+<script src="bower_components/angular-websocket/angular-websocket.js"></script>
+{{ parent() }}    	
+{% endblock %}
+{% block content %}
+    <h1>Index</h1>
+    <p>
+        Welcome to my awesome homepage.
+    </p>
+ 
+
+<h1>Films</h1>
+<div ng-app="myApp">
+    <div ng-controller="SweetCtrl">
+		Type: <input type="text" ng-model="msg"><br>
+		<br>
+		<p id="demo"> {{"{{msg}}"}} </p>
+		
+		<div class="progress">
+    	<div id="prgr2" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:13%">
+        13%
+    	</div>
+    	<div id="prgr1" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:13%">
+        13%
+    	</div>
+    	</div>
+
+	</div>
+</div>
+
+
+
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('SweetCtrl', function($scope) {
+    $scope.msg = "let's make some conversation!";
+});
+
+var conn = new WebSocket('ws://localhost:8000');
+conn.onopen = function(e) {
+    console.log("Connection established!");
+};
+
+conn.onmessage = function(e) {
+	obj = JSON.parse(e.data)
+	document.getElementById("demo").innerHTML = obj.percent;	
+	document.getElementById("prgr"+obj.id).innerHTML = obj.percent+'%';
+	document.getElementById("prgr"+obj.id).style.width = obj.percent+'%';
+    console.log(e.data);
+};
+</script>
+{% endblock %}

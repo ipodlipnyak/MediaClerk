@@ -1,0 +1,101 @@
+{% extends "Main.twig" %}
+
+{% block title %}Index{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>  	
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://unpkg.com/masonry-layout@4.1/dist/masonry.pkgd.min.js"></script>
+
+<style type="text/css">
+
+</style>
+{{ parent() }}    	
+{% endblock %}
+{% block content %}
+
+<div ng-app="myApp">
+
+	<div  ng-controller="SuperCtrl">
+	<h2>{{ "{{SuperData}}" }}</h2>
+	</div>
+	
+    {% for film in films %}
+        
+        <div class="panel panel-primary">
+        	<div class="panel-heading">{{ film.title|e }}</div>
+  			<!-- Default panel contents -->
+  		
+  			<div class="panel-body">     
+				
+				<p>The .active class animates the progress bar:</p>
+				
+				<div ng-controller="filmsCtrl{{ film.media_id|e }}"> 
+  					<div class="progress">
+    					<div id="prgr{{ film.media_id|e }}" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:{{ "{{ myData" }}{{ film.media_id|e }}{{ " }}" }}%">
+                            {{ "{{ myData" }}{{ film.media_id|e }}{{ " }}" }}%
+    					</div>
+    				</div>
+    			</div>
+    			
+    			<div class="btn-group" role="group" aria-label="...">
+					<button type="button" class="btn btn-default">Left</button>
+					<button type="button" class="btn btn-default">Middle</button>
+					<button type="button" class="btn btn-default">Right</button>
+				</div>
+    			
+    		</div>
+    	</div>
+    {% endfor %}
+    
+
+</div>
+
+
+<script>
+
+var app = angular.module('myApp', []);
+{% for film in films %}
+app.controller('filmsCtrl{{ film.media_id|e }}', function($scope, $http) {
+	$http.get("?ask_progr/{{ film.media_id|e }}").then(function(response) {
+		$scope.myData{{ film.media_id|e }} = response.data.conv_progr;
+  });
+});
+{% endfor %}
+
+app.controller('SuperCtrl', function($scope, $http) {
+	$http.get("?ask_progr/1").then(function(response) {
+	$scope.SuperData = response.data.progress;
+  });
+});
+
+app.controller('SweetCtrl', function($scope) {
+    $scope.firstName = "John";
+    $scope.lastName = "Doe";
+});
+
+app.controller('SweetCtrl1', function($scope) {
+    $scope.firstName = "John";
+    $scope.lastName = "Doe";
+});
+
+app.controller('CheckCtrl', ['$scope', function($scope) {
+    $scope.checkboxModel = {
+     value1 : true
+   };
+
+
+var conn = new WebSocket('ws://localhost:8000');
+conn.onopen = function(e) {
+    console.log("Connection established!");
+};
+
+conn.onmessage = function(e) {
+	obj = JSON.parse(e.data)	
+	document.getElementById("prgr"+obj.id).innerHTML = obj.percent+'%';
+	document.getElementById("prgr"+obj.id).style.width = obj.percent+'%';
+    console.log(e.data);
+};
+
+</script>
+{% endblock %}

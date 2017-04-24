@@ -1,0 +1,10 @@
+{
+	"autoload":{
+		"psr-4": {"MediaClerk\\": "src/"}
+	},                
+    "require": {
+        "php-activerecord/php-activerecord": "^1.1",
+        "twig/twig": "^1.24",
+        "twbs/bootstrap": "^3.3"
+    }
+}
