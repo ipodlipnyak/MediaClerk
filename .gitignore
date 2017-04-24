@@ -1,2 +1,6 @@
 *.avi
 *.mp4
+MediaDaemon/video/**/*.avi
+MediaDaemon/video/**/*.mkv
+MediaDaemon/output/**/*.avi
+MediaDaemon/output/**/*.mkv
